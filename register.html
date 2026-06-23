@@ -338,10 +338,88 @@
       }
     }
 
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvjKFeblrglgofOg8g-I5-nt8w62cUlmoOJyrBE8bzUIH685CGnl__W127ngZaqaVd/exec';
+
     function handleSubmit(e) {
       e.preventDefault();
-      const overlay = document.getElementById('success-overlay');
-      overlay.style.display = 'flex';
+      const form = e.target;
+      const inputs = form.querySelectorAll('input:not([type=checkbox]), select, textarea');
+      let valid = true;
+
+      inputs.forEach(el => {
+        if (el.hasAttribute('required') && !el.value.trim()) {
+          el.style.borderColor = '#e53e3e';
+          el.style.boxShadow = '0 0 0 3px rgba(229,62,62,0.15)';
+          valid = false;
+        } else {
+          el.style.borderColor = '';
+          el.style.boxShadow = '';
+        }
+      });
+
+      const agree = document.getElementById('agree');
+      if (!agree.checked) {
+        agree.style.outline = '2px solid #e53e3e';
+        valid = false;
+      } else {
+        agree.style.outline = '';
+      }
+
+      if (!valid) {
+        form.querySelector('[style*="e53e3e"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const teamMembers = [...form.querySelectorAll('#participantFields input')].map(i => i.value).join(', ');
+      const allSelects = form.querySelectorAll('select');
+      const campusEl = allSelects[0];
+      const teamSizeEl = document.getElementById('teamSize');
+
+      const payload = {
+        firstName: form.querySelectorAll('input[type=text]')[0].value,
+        lastName:  form.querySelectorAll('input[type=text]')[1].value,
+        email:     form.querySelector('input[type=email]').value,
+        campus:    campusEl.value,
+        country:   form.querySelectorAll('input[type=text]')[2].value,
+        groupName: form.querySelectorAll('input[type=text]')[3].value,
+        participants: teamSizeEl.value,
+        teamMembers: teamMembers
+      };
+
+      const btn = form.querySelector('.submit-btn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      // Soumission via iframe caché pour contourner CORS en local
+      const iframe = document.createElement('iframe');
+      iframe.name = 'hidden_iframe';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      const hiddenForm = document.createElement('form');
+      hiddenForm.method = 'GET';
+      hiddenForm.action = SCRIPT_URL;
+      hiddenForm.target = 'hidden_iframe';
+
+      Object.entries(payload).forEach(([key, val]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = val;
+        hiddenForm.appendChild(input);
+      });
+
+      document.body.appendChild(hiddenForm);
+
+      setTimeout(() => {
+        document.getElementById('success-overlay').style.display = 'flex';
+        btn.textContent = 'Join the Hackathon →';
+        btn.disabled = false;
+        document.body.removeChild(hiddenForm);
+        document.body.removeChild(iframe);
+      }, 1500);
+
+      hiddenForm.submit();
     }
   </script>
 </body>
