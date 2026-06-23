@@ -390,36 +390,13 @@
       btn.textContent = 'Sending...';
       btn.disabled = true;
 
-      // Soumission via iframe caché pour contourner CORS en local
-      const iframe = document.createElement('iframe');
-      iframe.name = 'hidden_iframe';
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-
-      const hiddenForm = document.createElement('form');
-      hiddenForm.method = 'GET';
-      hiddenForm.action = SCRIPT_URL;
-      hiddenForm.target = 'hidden_iframe';
-
-      Object.entries(payload).forEach(([key, val]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = val;
-        hiddenForm.appendChild(input);
-      });
-
-      document.body.appendChild(hiddenForm);
-
-      setTimeout(() => {
-        document.getElementById('success-overlay').style.display = 'flex';
-        btn.textContent = 'Join the Hackathon →';
-        btn.disabled = false;
-        document.body.removeChild(hiddenForm);
-        document.body.removeChild(iframe);
-      }, 1500);
-
-      hiddenForm.submit();
+      const params = new URLSearchParams(payload).toString();
+      fetch(SCRIPT_URL + '?' + params, { method: 'GET', mode: 'no-cors' })
+        .finally(() => {
+          document.getElementById('success-overlay').style.display = 'flex';
+          btn.textContent = 'Join the Hackathon →';
+          btn.disabled = false;
+        });
     }
   </script>
 </body>
