@@ -230,25 +230,25 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label class="label-text">First Name</label>
-                  <input type="text" class="input-field" placeholder="Your first name" required />
+                  <input type="text" name="firstName" class="input-field" placeholder="Your first name" required />
                 </div>
                 <div>
                   <label class="label-text">Last Name</label>
-                  <input type="text" class="input-field" placeholder="Your last name" required />
+                  <input type="text" name="lastName" class="input-field" placeholder="Your last name" required />
                 </div>
               </div>
 
               <!-- Row 2 -->
               <div class="mb-4">
                 <label class="label-text">Email</label>
-                <input type="email" class="input-field" placeholder="your@email.com" required />
+                <input type="email" name="email" class="input-field" placeholder="your@email.com" required />
               </div>
 
               <!-- Row 3 -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label class="label-text">Campus</label>
-                  <select class="input-field" required>
+                  <select name="campus" class="input-field" required>
                     <option value="" disabled selected>Select your campus</option>
                     <option>Abidjan</option>
                     <option>Cameroon</option>
@@ -261,7 +261,7 @@
                 </div>
                 <div>
                   <label class="label-text">Country</label>
-                  <input type="text" class="input-field" placeholder="Your country" required />
+                  <input type="text" name="country" class="input-field" placeholder="Your country" required />
                 </div>
               </div>
 
@@ -269,7 +269,7 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label class="label-text">Group Name</label>
-                  <input type="text" class="input-field" placeholder="Ex: MediAI, GreenBot..." required />
+                  <input type="text" name="groupName" class="input-field" placeholder="Ex: MediAI, GreenBot..." required />
                 </div>
                 <div>
                   <label class="label-text">Number of Participants</label>
@@ -371,19 +371,16 @@
       }
 
       const teamMembers = [...form.querySelectorAll('#participantFields input')].map(i => i.value).join(', ');
-      const allSelects = form.querySelectorAll('select');
-      const campusEl = allSelects[0];
-      const teamSizeEl = document.getElementById('teamSize');
 
       const payload = {
-        firstName: form.querySelectorAll('input[type=text]')[0].value,
-        lastName:  form.querySelectorAll('input[type=text]')[1].value,
-        email:     form.querySelector('input[type=email]').value,
-        campus:    campusEl.value,
-        country:   form.querySelectorAll('input[type=text]')[2].value,
-        groupName: form.querySelectorAll('input[type=text]')[3].value,
-        participants: teamSizeEl.value,
-        teamMembers: teamMembers
+        firstName:    form.querySelector('[name=firstName]').value,
+        lastName:     form.querySelector('[name=lastName]').value,
+        email:        form.querySelector('[name=email]').value,
+        campus:       form.querySelector('[name=campus]').value,
+        country:      form.querySelector('[name=country]').value,
+        groupName:    form.querySelector('[name=groupName]').value,
+        participants: form.querySelector('[name=teamSize]') ? form.querySelector('[name=teamSize]').value : document.getElementById('teamSize').value,
+        teamMembers:  teamMembers
       };
 
       const btn = form.querySelector('.submit-btn');
