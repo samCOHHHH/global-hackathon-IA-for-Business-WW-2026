@@ -184,7 +184,7 @@
                 <span class="text-white font-semibold tracking-wide" style="font-size:15px;">Developers.Institute</span>
               </div>
 
-              <span class="badge mb-6">July 9–13, 2026</span>
+              <span class="badge mb-6" style="font-size:15px;padding:8px 18px;font-weight:700;letter-spacing:0.05em;">July 9–13, 2026</span>
 
               <h1 class="text-4xl lg:text-5xl font-black text-white leading-[1.05] tracking-tight mt-4">
                 Global AI<br/>Hackathon<br/><span style="color:#1db954">2026</span>
@@ -198,6 +198,12 @@
 
               <p class="text-sm text-gray-500 leading-relaxed mt-4" style="max-width:280px;">
                 Join students from campuses across Africa, Europe, and Israel to build AI-powered solutions with real-world impact.
+              </p>
+
+              <p class="text-sm font-bold mt-5" style="color:#1db954;max-width:280px;">AI for Real Impact</p>
+              <p class="text-xs text-gray-500 leading-relaxed mt-2" style="max-width:280px;">
+                Participants will build innovative AI solutions capable of transforming industries, education, business, healthcare, productivity, communities, and everyday life.<br/><br/>
+                Whether you are technical or non-technical, this AI Hackathon is designed to push creativity, execution, and innovation to the next level.
               </p>
             </div>
 
@@ -282,10 +288,6 @@
                     <option>Paris School of Technology & Business – Paris, France</option>
                     <option>Empower Hope – Nairobi, Kenya</option>
                   </select>
-                </div>
-                <div>
-                  <label class="label-text">Country</label>
-                  <input type="text" name="country" class="input-field" placeholder="Your country" required />
                 </div>
               </div>
 
@@ -401,7 +403,6 @@
         lastName:     form.querySelector('[name=lastName]').value,
         email:        form.querySelector('[name=email]').value,
         campus:       form.querySelector('[name=campus]').value,
-        country:      form.querySelector('[name=country]').value,
         groupName:    form.querySelector('[name=groupName]').value,
         participants: form.querySelector('[name=teamSize]') ? form.querySelector('[name=teamSize]').value : document.getElementById('teamSize').value,
         teamMembers:  teamMembers
