@@ -410,7 +410,7 @@
       }
 
       const nameInputs = [...form.querySelectorAll('#participantFields input[type="text"]')];
-      const emailInputs = [...form.querySelectorAll('#participantFields input[type="email"]')];
+     const emailInputs = [...form.querySelectorAll('#participantFields input[placeholder*="Email"]')];
       const teamMembers = nameInputs.map(i => i.value).join(', ');
       const teamEmails = emailInputs.map(i => i.value).join(', ');
 
