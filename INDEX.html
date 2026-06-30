@@ -155,7 +155,7 @@
 
       <!-- Mobile header (shown only on mobile) -->
       <div class="md:hidden mb-8 text-center">
-        <span class="badge mb-4">July 9–13</span>
+        <span class="badge mb-4">July 9–13, 2026</span>
         <h1 class="text-3xl font-black text-white leading-tight mt-3">Global AI<br/>Hackathon 2026</h1>
         <p class="text-gray-400 text-sm mt-3 leading-relaxed">Join students from Developers Institute campuses across Africa, Europe, and Israel.</p>
       </div>
@@ -316,7 +316,7 @@
               <div class="flex items-start gap-3 mb-7">
                 <input type="checkbox" class="checkbox-custom mt-0.5" id="agree" required />
                 <label for="agree" class="text-sm text-gray-400 cursor-pointer leading-relaxed">
-                  I consent to my data being used for hackathon coordination.
+                  I have read the event rules and consent to my data being used for hackathon coordination.
                 </label>
               </div>
 
@@ -349,6 +349,14 @@
   </div>
 
   <script>
+    function toggleRules() {
+      const content = document.getElementById('rules-content');
+      const chevron = document.getElementById('rules-chevron');
+      const open = content.style.display === 'none';
+      content.style.display = open ? 'block' : 'none';
+      chevron.style.transform = open ? 'rotate(180deg)' : '';
+    }
+
     function updateParticipantFields() {
       const count = parseInt(document.getElementById('teamSize').value);
       const container = document.getElementById('participantNames');
@@ -358,7 +366,13 @@
       fields.innerHTML = '';
       for (let i = 1; i <= count; i++) {
         const div = document.createElement('div');
-        div.innerHTML = `<input type="text" class="input-field" placeholder="Participant ${i} — Full name" required />`;
+        div.style.display = 'flex';
+        div.style.flexDirection = 'column';
+        div.style.gap = '6px';
+        div.innerHTML = `
+          <input type="text" class="input-field" placeholder="Participant ${i} — Full name" required />
+          <input type="email" class="input-field" placeholder="Participant ${i} — Email" required style="font-size:13px;" />
+        `;
         fields.appendChild(div);
       }
     }
@@ -395,7 +409,10 @@
         return;
       }
 
-      const teamMembers = [...form.querySelectorAll('#participantFields input')].map(i => i.value).join(', ');
+      const nameInputs = [...form.querySelectorAll('#participantFields input[type="text"]')];
+      const emailInputs = [...form.querySelectorAll('#participantFields input[type="email"]')];
+      const teamMembers = nameInputs.map(i => i.value).join(', ');
+      const teamEmails = emailInputs.map(i => i.value).join(', ');
 
       const payload = {
         firstName:    form.querySelector('[name=firstName]').value,
@@ -404,7 +421,8 @@
         campus:       form.querySelector('[name=campus]').value,
         groupName:    form.querySelector('[name=groupName]').value,
         participants: form.querySelector('[name=teamSize]') ? form.querySelector('[name=teamSize]').value : document.getElementById('teamSize').value,
-        teamMembers:  teamMembers
+        teamMembers:  teamMembers,
+        teamEmails:   teamEmails
       };
 
       const btn = form.querySelector('.submit-btn');
